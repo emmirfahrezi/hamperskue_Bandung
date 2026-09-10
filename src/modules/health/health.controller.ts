@@ -6,6 +6,17 @@ import { Public } from '@common/decorators/public.decorator';
 @Controller()
 export class HealthController {
   @Public()
+  @Get()
+  @ApiOperation({ summary: 'Root API endpoint' })
+  root() {
+    return {
+      message: 'Hamperskue Backend API is running',
+      docs: '/api/docs',
+      health: '/api/health',
+    };
+  }
+
+  @Public()
   @Get('health')
   @ApiOperation({ summary: 'Health check endpoint' })
   health() {

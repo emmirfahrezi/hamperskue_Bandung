@@ -118,11 +118,25 @@ if (!process.env.VERCEL) {
 }
 
 // Handler for Vercel Serverless deployment
-export default async function handler(req: any, res: any) {
-  if (!appInstance) {
-    appInstance = await createNestApp();
-    await appInstance.init();
+async function handler(req: any, res: any) {
+  try {
+    if (!appInstance) {
+      appInstance = await createNestApp();
+      await appInstance.init();
+    }
+    const expressInstance = appInstance.getHttpAdapter().getInstance();
+    return expressInstance(req, res);
+  } catch (error: any) {
+    console.error('Serverless bootstrap error:', error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: 'Serverless Function Bootstrap Error',
+      error: error?.message || String(error),
+      stack: error?.stack,
+    });
   }
-  const expressInstance = appInstance.getHttpAdapter().getInstance();
-  return expressInstance(req, res);
 }
+
+export default handler;
+module.exports = handler;
+module.exports.default = handler;
