@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// Enums
+// ============================================
+
+enum Role {
+  ADMIN
+}
+
+enum StockStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+// ============================================
+// Models (MVP Hamperskue)
+// ============================================
+
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  email      String    @unique
+  password   String
+  role       Role      @default(ADMIN)
+  is_active  Boolean   @default(true)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  @@map("users")
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  is_active   Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  // Relations
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id           String         @id @default(uuid())
+  category_id  String
+  name         String
+  slug         String         @unique
+  description  String?
+  price        Decimal        @db.Decimal(12, 2)
+  stock_status StockStatus    @default(AVAILABLE)
+  is_active    Boolean        @default(true)
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+
+  // Relations
+  category     Category       @relation(fields: [category_id], references: [id], onDelete: Restrict)
+  images       ProductImage[]
+
+  @@map("products")
+}
+
+model ProductImage {
+  id         String   @id @default(uuid())
+  product_id String
+  image_url  String
+  sort_order Int      @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relations
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+model BusinessSetting {
+  id              String   @id @default(uuid())
+  business_name   String
+  description     String?
+  whatsapp_number String
+  instagram_url   String?
+  address         String?
+  operating_hours String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@map("business_settings")
+}
