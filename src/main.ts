@@ -1,11 +1,13 @@
-import { ValidationPipe, VersioningType, ClassSerializerInterceptor } from '@nestjs/common';
+import { ValidationPipe, VersioningType, ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import cookieParser = require('cookie-parser');
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+let appInstance: INestApplication;
+
+export async function createNestApp(): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
@@ -15,7 +17,6 @@ async function bootstrap() {
   const corsOrigin = configService.get<string>('app.corsOrigin');
   const swaggerPath = configService.get<string>('swagger.path');
   const apiPrefix = configService.get<string>('app.apiPrefix');
-  const port = configService.get<number>('app.port');
 
   // Enable CORS
   app.enableCors({
@@ -90,6 +91,17 @@ async function bootstrap() {
     });
   }
 
+  return app;
+}
+
+// Local development / standalone server
+async function bootstrap() {
+  const app = await createNestApp();
+  const configService = app.get(ConfigService);
+  const port = configService.get<number>('app.port') || 3000;
+  const swaggerEnabled = configService.get<boolean>('swagger.enabled');
+  const swaggerPath = configService.get<string>('swagger.path');
+
   await app.listen(port);
 
   console.log(`\n🚀 Application is running on: http://localhost:${port}/`);
@@ -101,4 +113,16 @@ async function bootstrap() {
   console.log(`🏓 Ping endpoint: http://localhost:${port}/ping\n`);
 }
 
-bootstrap();
+if (!process.env.VERCEL) {
+  bootstrap();
+}
+
+// Handler for Vercel Serverless deployment
+export default async function handler(req: any, res: any) {
+  if (!appInstance) {
+    appInstance = await createNestApp();
+    await appInstance.init();
+  }
+  const expressInstance = appInstance.getHttpAdapter().getInstance();
+  return expressInstance(req, res);
+}
