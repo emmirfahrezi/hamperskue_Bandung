@@ -4,12 +4,12 @@ import {
   ConflictException,
   BadRequestException,
 } from '@nestjs/common';
-import { PrismaService } from '@common/prisma/prisma.service';
+import { PrismaService } from '../../common/prisma/prisma.service';
 import { CreateCategoryDto } from './core/dto/create-category.dto';
 import { UpdateCategoryDto } from './core/dto/update-category.dto';
 import { CategoryQueryDto } from './core/dto/category-query.dto';
 import { CategoryEntity } from './core/entities/category.entity';
-import { SlugUtil } from '@common/utils/slug.util';
+import { SlugUtil } from '../../common/utils/slug.util';
 import { Prisma } from '@prisma/client';
 
 @Injectable()

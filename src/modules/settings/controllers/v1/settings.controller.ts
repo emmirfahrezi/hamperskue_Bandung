@@ -8,12 +8,12 @@ import {
 import { SettingsService } from '../../settings.service';
 import { UpdateSettingDto } from '../../core/dto/update-setting.dto';
 import { SettingEntity } from '../../core/entities/setting.entity';
-import { Public } from '@common/decorators/public.decorator';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Public } from '../../../../common/decorators/public.decorator';
+import { Roles } from '../../../../common/decorators/roles.decorator';
 import { Role } from '@prisma/client';
-import { ApiSuccessResponse } from '@common/decorators/api-response.decorator';
-import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
-import { RolesGuard } from '@common/guards/roles.guard';
+import { ApiSuccessResponse } from '../../../../common/decorators/api-response.decorator';
+import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../../../common/guards/roles.guard';
 
 @ApiTags('Settings')
 @Controller({ path: 'settings', version: '1' })

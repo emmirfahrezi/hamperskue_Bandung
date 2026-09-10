@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '@common/prisma/prisma.service';
-import { PasswordUtil } from '@common/utils/password.util';
+import { PrismaService } from '../../common/prisma/prisma.service';
+import { PasswordUtil } from '../../common/utils/password.util';
 import { LoginDto } from './core/dto/login.dto';
 import { RegisterDto } from './core/dto/register.dto';
 import { AuthResponseDto, AuthUserDto } from './core/dto/auth-response.dto';

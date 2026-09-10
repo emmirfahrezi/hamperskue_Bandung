@@ -21,16 +21,16 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { UsersService } from '../../users.service';
-import { CreateUserDto } from '@modules/users/core/dto/create-user.dto';
-import { UpdateUserDto } from '@modules/users/core/dto/update-user.dto';
-import { UserQueryDto } from '@modules/users/core/dto/user-query.dto';
+import { CreateUserDto } from '../../core/dto/create-user.dto';
+import { UpdateUserDto } from '../../core/dto/update-user.dto';
+import { UserQueryDto } from '../../core/dto/user-query.dto';
 import { UserEntity } from '../../core/entities/user.entity';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Roles } from '../../../../common/decorators/roles.decorator';
 import { Role } from '@prisma/client';
-import { ApiSuccessResponse } from '@common/decorators/api-response.decorator';
-import { PaginatedResponseDto } from '@common/dto/pagination.dto';
-import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
-import { RolesGuard } from '@common/guards/roles.guard';
+import { ApiSuccessResponse } from '../../../../common/decorators/api-response.decorator';
+import { PaginatedResponseDto } from '../../../../common/dto/pagination.dto';
+import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../../../common/guards/roles.guard';
 
 @ApiTags('Users')
 @ApiCookieAuth('Authentication')

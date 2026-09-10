@@ -20,10 +20,10 @@ import { AuthService } from '../../auth.service';
 import { LoginDto } from '../../core/dto/login.dto';
 import { RegisterDto } from '../../core/dto/register.dto';
 import { AuthResponseDto, AuthUserDto } from '../../core/dto/auth-response.dto';
-import { Public } from '@common/decorators/public.decorator';
-import { ApiSuccessResponse } from '@common/decorators/api-response.decorator';
-import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
-import { GetUser } from '@common/decorators/get-user.decorator';
+import { Public } from '../../../../common/decorators/public.decorator';
+import { ApiSuccessResponse } from '../../../../common/decorators/api-response.decorator';
+import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
+import { GetUser } from '../../../../common/decorators/get-user.decorator';
 
 @ApiTags('Authentication')
 @Controller({ path: 'auth', version: '1' })

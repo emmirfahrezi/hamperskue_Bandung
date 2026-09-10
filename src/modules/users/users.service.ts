@@ -3,13 +3,13 @@ import {
   NotFoundException,
   ConflictException,
 } from '@nestjs/common';
-import { PrismaService } from '@common/prisma/prisma.service';
+import { PrismaService } from '../../common/prisma/prisma.service';
 import { CreateUserDto } from './core/dto/create-user.dto';
 import { UpdateUserDto } from './core/dto/update-user.dto';
 import { UserQueryDto } from './core/dto/user-query.dto';
 import { UserEntity } from './core/entities/user.entity';
-import { PaginatedResponseDto } from '@common/dto/pagination.dto';
-import { PasswordUtil } from '@common/utils/password.util';
+import { PaginatedResponseDto } from '../../common/dto/pagination.dto';
+import { PasswordUtil } from '../../common/utils/password.util';
 import { Prisma } from '@prisma/client';
 
 @Injectable()

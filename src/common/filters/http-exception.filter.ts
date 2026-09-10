@@ -1,4 +1,4 @@
-import { ApiResponseDto } from '@common/dto/api-response.dto';
+import { ApiResponseDto } from '../dto/api-response.dto';
 import { Response } from 'express';
 import {
   Catch,

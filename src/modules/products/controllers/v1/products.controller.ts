@@ -25,13 +25,13 @@ import { CreateProductDto } from '../../core/dto/create-product.dto';
 import { UpdateProductDto } from '../../core/dto/update-product.dto';
 import { ProductQueryDto } from '../../core/dto/product-query.dto';
 import { ProductEntity } from '../../core/entities/product.entity';
-import { Public } from '@common/decorators/public.decorator';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Public } from '../../../../common/decorators/public.decorator';
+import { Roles } from '../../../../common/decorators/roles.decorator';
 import { Role } from '@prisma/client';
-import { ApiSuccessResponse } from '@common/decorators/api-response.decorator';
-import { PaginatedResponseDto } from '@common/dto/pagination.dto';
-import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
-import { RolesGuard } from '@common/guards/roles.guard';
+import { ApiSuccessResponse } from '../../../../common/decorators/api-response.decorator';
+import { PaginatedResponseDto } from '../../../../common/dto/pagination.dto';
+import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../../../common/guards/roles.guard';
 
 @ApiTags('Products')
 @Controller({ path: 'products', version: '1' })

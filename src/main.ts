@@ -90,6 +90,11 @@ async function bootstrap() {
     });
   }
 
+  if (process.env.VERCEL) {
+    await app.init();
+    return app;
+  }
+
   await app.listen(port);
 
   console.log(`\n🚀 Application is running on: http://localhost:${port}/`);
@@ -101,4 +106,9 @@ async function bootstrap() {
   console.log(`🏓 Ping endpoint: http://localhost:${port}/ping\n`);
 }
 
-bootstrap();
+if (!process.env.VERCEL) {
+  bootstrap();
+}
+
+export default bootstrap;
+

@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString, IsBoolean, IsEnum, IsUUID, IsNumber, Min } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
-import { PaginationDto } from '@common/dto/pagination.dto';
+import { PaginationDto } from '../../../../common/dto/pagination.dto';
 import { StockStatus } from '@prisma/client';
 
 export class ProductQueryDto extends PaginationDto {

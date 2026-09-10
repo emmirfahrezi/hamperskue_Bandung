@@ -25,15 +25,15 @@ import { CreateCategoryDto } from '../../core/dto/create-category.dto';
 import { UpdateCategoryDto } from '../../core/dto/update-category.dto';
 import { CategoryQueryDto } from '../../core/dto/category-query.dto';
 import { CategoryEntity } from '../../core/entities/category.entity';
-import { Public } from '@common/decorators/public.decorator';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Public } from '../../../../common/decorators/public.decorator';
+import { Roles } from '../../../../common/decorators/roles.decorator';
 import { Role } from '@prisma/client';
 import {
   ApiSuccessResponse,
   ApiSuccessArrayResponse,
-} from '@common/decorators/api-response.decorator';
-import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
-import { RolesGuard } from '@common/guards/roles.guard';
+} from '../../../../common/decorators/api-response.decorator';
+import { JwtAuthGuard } from '../../../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../../../common/guards/roles.guard';
 
 @ApiTags('Categories')
 @Controller({ path: 'categories', version: '1' })

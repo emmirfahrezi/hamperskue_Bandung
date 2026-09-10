@@ -4,13 +4,13 @@ import {
   ConflictException,
   BadRequestException,
 } from '@nestjs/common';
-import { PrismaService } from '@common/prisma/prisma.service';
+import { PrismaService } from '../../common/prisma/prisma.service';
 import { CreateProductDto } from './core/dto/create-product.dto';
 import { UpdateProductDto } from './core/dto/update-product.dto';
 import { ProductQueryDto } from './core/dto/product-query.dto';
 import { ProductEntity } from './core/entities/product.entity';
-import { PaginatedResponseDto } from '@common/dto/pagination.dto';
-import { SlugUtil } from '@common/utils/slug.util';
+import { PaginatedResponseDto } from '../../common/dto/pagination.dto';
+import { SlugUtil } from '../../common/utils/slug.util';
 import { Prisma } from '@prisma/client';
 
 @Injectable()

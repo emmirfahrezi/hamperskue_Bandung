@@ -1,4 +1,4 @@
-import { ApiResponseDto } from '@common/dto/api-response.dto';
+import { ApiResponseDto } from '../dto/api-response.dto';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import {

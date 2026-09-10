@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { StockStatus } from '@prisma/client';
-import { CategoryEntity } from '@modules/categories/core/entities/category.entity';
+import { CategoryEntity } from '../../../categories/core/entities/category.entity';
 import { ProductImageEntity } from './product-image.entity';
 
 export class ProductEntity {
