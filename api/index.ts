@@ -3,7 +3,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import cookieParser = require('cookie-parser');
-import { AppModule } from '../src/app.module';
+import { AppModule } from '../dist/app.module';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express = require('express');
 
@@ -79,7 +79,7 @@ async function bootstrapServer() {
   isAppReady = true;
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   try {
     if (!isAppReady) {
       await bootstrapServer();
@@ -91,6 +91,11 @@ export default async function handler(req: any, res: any) {
       statusCode: 500,
       message: 'Serverless Function Crash',
       error: err?.message || String(err),
+      stack: err?.stack,
     });
   }
 }
+
+export default handler;
+module.exports = handler;
+module.exports.default = handler;
