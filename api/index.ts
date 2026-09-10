@@ -10,6 +10,20 @@ import express from 'express';
 const server = express();
 let isAppReady = false;
 
+server.get('/', (req, res) => {
+  res.json({
+    message: 'Hamperskue Backend API is running',
+    version: '1.0.0',
+    docs: '/api/docs',
+    endpoints: {
+      health: '/api/health',
+      products: '/api/v1/products',
+      categories: '/api/v1/categories',
+      settings: '/api/v1/settings',
+    },
+  });
+});
+
 async function bootstrapServer() {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 

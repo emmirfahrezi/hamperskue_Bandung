@@ -11,7 +11,14 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     const connectionString =
       process.env.DATABASE_URL ||
       'postgresql://postgres:postgres@localhost:5432/hamperskue_db?schema=public';
-    const pool = new Pool({ connectionString });
+
+    const pool = new Pool({
+      connectionString,
+      connectionTimeoutMillis: 4000,
+      idleTimeoutMillis: 5000,
+      max: 5,
+    });
+
     const adapter = new PrismaPg(pool as any);
 
     super({
@@ -24,6 +31,17 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleInit() {
+    // If on Vercel and DATABASE_URL is localhost or empty, avoid hanging on unreachable TCP socket
+    if (
+      process.env.VERCEL &&
+      (!process.env.DATABASE_URL || process.env.DATABASE_URL.includes('localhost') || process.env.DATABASE_URL.includes('127.0.0.1'))
+    ) {
+      this.logger.warn(
+        '⚠️ DATABASE_URL is not set or points to localhost on Vercel. Database queries will fail until a cloud PostgreSQL DATABASE_URL is provided in Vercel settings.',
+      );
+      return;
+    }
+
     try {
       await this.$connect();
       this.logger.log('✅ Database connected successfully');
