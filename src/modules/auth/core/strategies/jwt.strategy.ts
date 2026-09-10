@@ -20,7 +20,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('jwt.secret'),
+      secretOrKey:
+        configService.get<string>('jwt.secret') ||
+        'hamperskue-fallback-jwt-secret-key-2026',
     });
   }
 
