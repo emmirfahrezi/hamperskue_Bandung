@@ -8,7 +8,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   private readonly logger = new Logger(PrismaService.name);
 
   constructor() {
-    const connectionString = process.env.DATABASE_URL;
+    const connectionString =
+      process.env.DATABASE_URL ||
+      'postgresql://postgres:postgres@localhost:5432/hamperskue_db?schema=public';
     const pool = new Pool({ connectionString });
     const adapter = new PrismaPg(pool as any);
 
@@ -22,8 +24,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleInit() {
-    await this.$connect();
-    this.logger.log('✅ Database connected successfully');
+    try {
+      await this.$connect();
+      this.logger.log('✅ Database connected successfully');
+    } catch (error: any) {
+      this.logger.error(`❌ Database connection failed: ${error.message}`);
+    }
 
     // Log queries in development
     if (process.env.NODE_ENV === 'development') {
@@ -36,8 +42,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleDestroy() {
-    await this.$disconnect();
-    this.logger.log('Database disconnected');
+    try {
+      await this.$disconnect();
+      this.logger.log('Database disconnected');
+    } catch (error: any) {
+      this.logger.error(`Database disconnect error: ${error.message}`);
+    }
   }
 
   async cleanDatabase() {
