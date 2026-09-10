@@ -1,13 +1,11 @@
-import { ValidationPipe, VersioningType, ClassSerializerInterceptor, INestApplication } from '@nestjs/common';
+import { ValidationPipe, VersioningType, ClassSerializerInterceptor } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import cookieParser = require('cookie-parser');
 import { AppModule } from './app.module';
 
-let appInstance: INestApplication;
-
-export async function createNestApp(): Promise<INestApplication> {
+async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
@@ -15,8 +13,9 @@ export async function createNestApp(): Promise<INestApplication> {
   // Get configurations
   const swaggerEnabled = configService.get<boolean>('swagger.enabled');
   const corsOrigin = configService.get<string>('app.corsOrigin');
-  const swaggerPath = configService.get<string>('swagger.path');
-  const apiPrefix = configService.get<string>('app.apiPrefix');
+  const swaggerPath = configService.get<string>('swagger.path') || 'docs';
+  const apiPrefix = configService.get<string>('app.apiPrefix') || 'api';
+  const port = configService.get<number>('app.port') || 3000;
 
   // Enable CORS
   app.enableCors({
@@ -91,17 +90,6 @@ export async function createNestApp(): Promise<INestApplication> {
     });
   }
 
-  return app;
-}
-
-// Local development / standalone server
-async function bootstrap() {
-  const app = await createNestApp();
-  const configService = app.get(ConfigService);
-  const port = configService.get<number>('app.port') || 3000;
-  const swaggerEnabled = configService.get<boolean>('swagger.enabled');
-  const swaggerPath = configService.get<string>('swagger.path');
-
   await app.listen(port);
 
   console.log(`\n🚀 Application is running on: http://localhost:${port}/`);
@@ -113,30 +101,4 @@ async function bootstrap() {
   console.log(`🏓 Ping endpoint: http://localhost:${port}/ping\n`);
 }
 
-if (!process.env.VERCEL) {
-  bootstrap();
-}
-
-// Handler for Vercel Serverless deployment
-async function handler(req: any, res: any) {
-  try {
-    if (!appInstance) {
-      appInstance = await createNestApp();
-      await appInstance.init();
-    }
-    const expressInstance = appInstance.getHttpAdapter().getInstance();
-    return expressInstance(req, res);
-  } catch (error: any) {
-    console.error('Serverless bootstrap error:', error);
-    return res.status(500).json({
-      statusCode: 500,
-      message: 'Serverless Function Bootstrap Error',
-      error: error?.message || String(error),
-      stack: error?.stack,
-    });
-  }
-}
-
-export default handler;
-module.exports = handler;
-module.exports.default = handler;
+bootstrap();
