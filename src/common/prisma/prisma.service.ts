@@ -12,17 +12,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       process.env.DATABASE_URL ||
       'postgresql://postgres:postgres@localhost:5432/hamperskue_db?schema=public';
 
-    const pool = new Pool({
-      connectionString,
-      connectionTimeoutMillis: 4000,
-      idleTimeoutMillis: 5000,
-      max: 5,
-    });
-
-    const adapter = new PrismaPg(pool as any);
-
     super({
-      adapter,
       log: [
         { level: 'error', emit: 'stdout' },
         { level: 'warn', emit: 'stdout' },
