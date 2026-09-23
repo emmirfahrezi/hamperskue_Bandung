@@ -88,6 +88,12 @@ async function bootstrapServer() {
         const document = SwaggerModule.createDocument(app, config);
         SwaggerModule.setup(swaggerPath, app, document, {
           useGlobalPrefix: true,
+          customCssUrl:
+            'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+          customJs: [
+            'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js',
+          ],
           swaggerOptions: {
             persistAuthorization: true,
           },
@@ -104,11 +110,7 @@ async function bootstrapServer() {
 async function handler(req: any, res: any) {
   try {
     await bootstrapServer();
-    return new Promise((resolve, reject) => {
-      res.once('finish', resolve);
-      res.once('error', reject);
-      server(req, res);
-    });
+    server(req, res);
   } catch (err: any) {
     console.error('Vercel Serverless Function Crash:', err);
     if (!res.headersSent) {
