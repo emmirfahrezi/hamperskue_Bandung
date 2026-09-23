@@ -11,6 +11,7 @@
     "api/index.ts": {
       "includeFiles": "dist/**"
     }
-  }
+  },
+  "regions": ["hnd1"]
 }
 
