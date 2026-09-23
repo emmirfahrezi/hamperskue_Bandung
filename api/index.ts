@@ -104,12 +104,7 @@ async function bootstrapServer() {
 async function handler(req: any, res: any) {
   try {
     await bootstrapServer();
-    return new Promise((resolve, reject) => {
-      res.on('finish', resolve);
-      res.on('close', resolve);
-      res.on('error', reject);
-      server(req, res);
-    });
+    server(req, res);
   } catch (err: any) {
     console.error('Vercel Serverless Function Crash:', err);
     if (!res.headersSent) {
