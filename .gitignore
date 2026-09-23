@@ -38,3 +38,6 @@ Thumbs.db
 # Temp / Cache
 .eslintcache
 *.tsbuildinfo
+
+.vercel
+.env*

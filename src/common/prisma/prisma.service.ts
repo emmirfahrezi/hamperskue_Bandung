@@ -43,10 +43,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     }
 
     try {
-      await this.$connect();
-      this.logger.log('✅ Database connected successfully');
+      // Prisma automatically connects on the first query, so we don't need to block bootstrap here
+      // This speeds up Cold Starts on Vercel significantly.
+      // await this.$connect();
+      this.logger.log('✅ Prisma Service Initialized (will auto-connect on first query)');
     } catch (error: any) {
-      this.logger.error(`❌ Database connection failed: ${error.message}`);
+      this.logger.error(`❌ Prisma initialization error: ${error.message}`);
     }
 
     // Log queries in development
