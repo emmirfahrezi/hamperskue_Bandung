@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Get,
+  Patch,
   Body,
   HttpCode,
   HttpStatus,
@@ -19,6 +20,7 @@ import {
 import { AuthService } from '../../auth.service';
 import { LoginDto } from '../../core/dto/login.dto';
 import { RegisterDto } from '../../core/dto/register.dto';
+import { UpdateProfileDto } from '../../core/dto/update-profile.dto';
 import { AuthResponseDto, AuthUserDto } from '../../core/dto/auth-response.dto';
 import { Public } from '../../../../common/decorators/public.decorator';
 import { ApiSuccessResponse } from '../../../../common/decorators/api-response.decorator';
@@ -95,5 +97,19 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async getMe(@GetUser('userId') userId: string): Promise<AuthUserDto> {
     return this.authService.getMe(userId);
+  }
+
+  @Patch('profile')
+  @UseGuards(JwtAuthGuard)
+  @ApiCookieAuth('Authentication')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update customer / user profile (phone, address, etc.)' })
+  @ApiSuccessResponse(AuthUserDto)
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async updateProfile(
+    @GetUser('userId') userId: string,
+    @Body() updateProfileDto: UpdateProfileDto,
+  ): Promise<AuthUserDto> {
+    return this.authService.updateProfile(userId, updateProfileDto);
   }
 }

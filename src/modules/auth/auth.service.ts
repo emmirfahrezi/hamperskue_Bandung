@@ -6,11 +6,12 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { Role } from '@prisma/client';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { PasswordUtil } from '../../common/utils/password.util';
 import { LoginDto } from './core/dto/login.dto';
 import { RegisterDto } from './core/dto/register.dto';
-import { AuthResponseDto, AuthUserDto } from './core/dto/auth-response.dto';
+import { AuthUserDto } from './core/dto/auth-response.dto';
 import { JwtPayload } from './core/interfaces/jwt-payload.interface';
 
 @Injectable()
@@ -57,12 +58,16 @@ export class AuthService {
         name: user.name,
         email: user.email,
         role: user.role,
+        phone: user.phone,
+        address: user.address,
+        city: user.city,
+        postal_code: user.postal_code,
       },
     };
   }
 
   async register(registerDto: RegisterDto): Promise<{ access_token: string; user: AuthUserDto }> {
-    const { email, password, name } = registerDto;
+    const { email, password, name, phone, address, city, postal_code } = registerDto;
 
     const existingUser = await this.prisma.user.findUnique({
       where: { email },
@@ -79,7 +84,11 @@ export class AuthService {
         name,
         email,
         password: hashedPassword,
-        role: 'ADMIN',
+        role: Role.CUSTOMER,
+        phone,
+        address,
+        city,
+        postal_code,
       },
     });
 
@@ -99,6 +108,10 @@ export class AuthService {
         name: user.name,
         email: user.email,
         role: user.role,
+        phone: user.phone,
+        address: user.address,
+        city: user.city,
+        postal_code: user.postal_code,
       },
     };
   }
@@ -111,12 +124,41 @@ export class AuthService {
         name: true,
         email: true,
         role: true,
+        phone: true,
+        address: true,
+        city: true,
+        postal_code: true,
       },
     });
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
+
+    return user;
+  }
+
+  async updateProfile(userId: string, data: Partial<AuthUserDto>): Promise<AuthUserDto> {
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: data.name,
+        phone: data.phone,
+        address: data.address,
+        city: data.city,
+        postal_code: data.postal_code,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        phone: true,
+        address: true,
+        city: true,
+        postal_code: true,
+      },
+    });
 
     return user;
   }

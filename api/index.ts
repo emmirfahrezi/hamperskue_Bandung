@@ -10,15 +10,17 @@ import express from 'express';
 const server = express();
 let isAppReady = false;
 
-server.get('/', (req, res) => {
+server.get(['/', '/api'], (req, res) => {
   res.json({
     message: 'Hamperskue Backend API is running',
     version: '1.0.0',
     docs: '/api/docs',
     endpoints: {
-      health: '/api/health',
+      health: '/api/v1/health',
       products: '/api/v1/products',
       categories: '/api/v1/categories',
+      cart: '/api/v1/cart',
+      orders: '/api/v1/orders',
       settings: '/api/v1/settings',
     },
   });
@@ -67,7 +69,7 @@ async function bootstrapServer() {
       if (swaggerEnabled) {
         const config = new DocumentBuilder()
           .setTitle('Hamperskue API')
-          .setDescription('Backend REST API Documentation for Hamperskue Digital Hampers Catalog MVP.')
+          .setDescription('Backend REST API Documentation for Hamperskue Digital Hampers Catalog & Checkout.')
           .setVersion('1.0')
           .addCookieAuth('Authentication', {
             type: 'apiKey',
@@ -79,6 +81,8 @@ async function bootstrapServer() {
           .addTag('Authentication')
           .addTag('Products')
           .addTag('Categories')
+          .addTag('Cart')
+          .addTag('Orders')
           .addTag('Settings')
           .addTag('Dashboard')
           .addTag('Users')

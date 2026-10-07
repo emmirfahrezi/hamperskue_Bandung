@@ -23,6 +23,8 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { ProductsModule } from './modules/products/products.module';
 import { SettingsModule } from './modules/settings/settings.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { CartModule } from './modules/cart/cart.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     ProductsModule,
     SettingsModule,
     DashboardModule,
+    CartModule,
+    OrdersModule,
     HealthModule,
   ],
   providers: [

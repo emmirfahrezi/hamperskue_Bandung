@@ -73,6 +73,8 @@ async function bootstrap() {
       .addTag('Authentication', 'Authentication & session management (Cookie-based)')
       .addTag('Products', 'Hampers catalog & product management')
       .addTag('Categories', 'Hampers category management')
+      .addTag('Cart', 'Customer shopping cart management')
+      .addTag('Orders', 'Order checkout & Midtrans payment gateway management')
       .addTag('Settings', 'Business profile & WhatsApp ordering settings')
       .addTag('Dashboard', 'Admin dashboard statistics')
       .addTag('Users', 'Admin account management')
